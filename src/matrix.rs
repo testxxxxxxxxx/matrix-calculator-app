@@ -2,17 +2,17 @@ use std::io;
 
 pub struct Matrix{
 
-    rows: u32,
-    col: u32,
-    matrix: Vec<Vec<usize>>
+    pub rows: u32,
+    pub col: u32,
+    pub matrix: Vec<Vec<usize>>
 
 }
 
-trait MatrixMethods {
+pub trait MatrixMethods {
 
     fn new(rows: u32, col: u32) -> Self;
 
-    fn fill_matrix(&mut self);
+    fn fill(&mut self);
 
 }
 
@@ -23,10 +23,10 @@ impl MatrixMethods for Matrix {
         Matrix { rows: rows, col: col, matrix: Vec::new() }
 
     }
-    fn fill_matrix(&mut self){
+    fn fill(&mut self){
 
         let mut input_line = String::new();
-        let mut value: usize = 0;
+        let mut value: usize;
 
         for _i in 0..self.rows { 
 
