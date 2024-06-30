@@ -1,4 +1,4 @@
-use crate::matrix::Matrix;
+use crate::{main, matrix::Matrix};
 
 pub struct MatrixOperations {
 
@@ -16,6 +16,7 @@ trait MatrixOperationsMethods {
     fn mul_a_and_b(&mut self) -> Matrix;
     fn rev(&mut self) -> Matrix;
     fn transform(&mut self) -> Matrix;
+    fn det(&mut self) -> u32;
 
 }
 
@@ -126,10 +127,29 @@ impl MatrixOperationsMethods for MatrixOperations {
     }
     fn transform(&mut self) -> Matrix {
 
-        let mut matrix_c: Matrix = Matrix { rows: self.matrix_a.rows, col: self.matrix_a.col, matrix: Vec::new() };
+        let mut matrix_c: Matrix = Matrix { rows: self.matrix_a.col, col: self.matrix_a.rows, matrix: Vec::new() };
+
+        for i in 0..matrix_c.rows
+        {
+            for j in 0..matrix_c.col
+            {
+                matrix_c.matrix[j as usize][i as usize] = self.matrix_a.matrix[i as usize][j as usize]; 
+
+            }
+
+        }
 
         return matrix_c;
     }
+    fn det(&mut self) -> u32 {
+        
+        let mut result: u32;
 
+        result = 0;
+
+
+        return result;
+    }
+ 
 
 }
