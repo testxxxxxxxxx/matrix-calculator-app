@@ -1,4 +1,4 @@
-use crate::matrix::Matrix;
+use crate::matrix::{Matrix, MatrixMethods};
 
 pub struct MatrixOperations {
 
@@ -79,7 +79,7 @@ impl MatrixOperationsMethods for MatrixOperations {
         {
             for j in 0..matrix_c.col
             {
-                matrix_c.matrix[i as usize][j as usize] *= value as usize;
+                matrix_c.matrix[i as usize][j as usize] *= value as isize;
 
             }
 
@@ -111,7 +111,7 @@ impl MatrixOperationsMethods for MatrixOperations {
 
                 }
 
-                matrix_c.matrix[i as usize][j as usize] = temp_result as usize;
+                matrix_c.matrix[i as usize][j as usize] = temp_result as isize;
 
             }
 
@@ -120,9 +120,104 @@ impl MatrixOperationsMethods for MatrixOperations {
         return matrix_c;
     }
     fn rev(&mut self) -> Matrix {
-
+ 
         let mut matrix_c: Matrix = Matrix { rows: self.matrix_a.rows, col: self.matrix_a.col, matrix: Vec::new() };
 
+        matrix_c.fill_unit();
+
+        let mut it: u32 = 0;
+
+        //under diagonal
+
+        for _z in 0..self.matrix_a.rows {
+
+            for _i in (it + 1)..self.matrix_a.rows {
+
+                for _j in 0..self.matrix_a.col {
+
+                    if _i != it
+                    {
+                        self.matrix_a.matrix[_i as usize][_j as usize] = (self.matrix_a.matrix[it as usize][it as usize] * self.matrix_a.matrix[_i as usize][_j as usize]) + (-1 * (self.matrix_a.matrix[_i as usize][_j as usize] * self.matrix_a.matrix[it as usize][it as usize]))
+
+                    }
+
+                }
+
+                for _j in 0..self.matrix_a.col {
+
+                    if _i != it
+                    {
+                        matrix_c.matrix[_i as usize][_j as usize] = (self.matrix_a.matrix[it as usize][it as usize] * matrix_c.matrix[_i as usize][_j as usize]) + (-1 * (matrix_c.matrix[_i as usize][_j as usize] * self.matrix_a.matrix[it as usize][it as usize]));
+
+                    }
+
+                }
+
+            }
+
+            it += 1;
+
+        }
+
+        //above diagonal
+
+        for _z in self.matrix_a.rows..0 {
+
+            for _i in (it + 1)..0 {
+
+                for _j in self.matrix_a.col..0 {
+
+                    if _i != it
+                    {
+                        self.matrix_a.matrix[_i as usize][_j as usize] = (self.matrix_a.matrix[it as usize][it as usize] * self.matrix_a.matrix[_i as usize][_j as usize]) + (-1 * (self.matrix_a.matrix[_i as usize][_j as usize] * self.matrix_a.matrix[it as usize][it as usize]))
+
+                    }
+
+                }
+
+                for _j in self.matrix_a.col..0 {
+
+                    if _i != it
+                    {
+                        matrix_c.matrix[_i as usize][_j as usize] = (self.matrix_a.matrix[it as usize][it as usize] * matrix_c.matrix[_i as usize][_j as usize]) + (-1 * (matrix_c.matrix[_i as usize][_j as usize] * self.matrix_a.matrix[it as usize][it as usize]));
+
+                    }
+
+                }
+
+            }
+
+            it -= 1;
+
+        }
+
+        it = 0;
+
+        //get unit matrix in matrix_a
+
+        for _z in 0..self.matrix_a.rows {
+
+            for _i in (it + 1)..self.matrix_a.rows {
+
+                for _j in 0..self.matrix_a.col {
+
+                    self.matrix_a.matrix[_i as usize][_j as usize] /= self.matrix_a.matrix[it as usize][it as usize];
+
+                }
+
+                for _j in 0..self.matrix_a.col {
+
+                    matrix_c.matrix[_i as usize][_j as usize] /= self.matrix_a.matrix[it as usize][it as usize];
+
+                }
+
+            }
+
+            it += 1;
+
+        }    
+
+        //return reverse matrix
         return matrix_c;
     }
     fn transform(&mut self) -> Matrix {
@@ -139,6 +234,8 @@ impl MatrixOperationsMethods for MatrixOperations {
 
         }
 
+        //get transform matrix_a
+
         return matrix_c;
     }
     fn det(&mut self) -> u32 {
@@ -151,5 +248,4 @@ impl MatrixOperationsMethods for MatrixOperations {
         return result;
     }
  
-
 }
