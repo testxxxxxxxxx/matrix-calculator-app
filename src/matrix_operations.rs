@@ -14,6 +14,7 @@ trait MatrixOperationsMethods {
     fn sub(&mut self) -> Matrix;
     fn mul_a(&mut self, value: f32) -> Matrix;
     fn mul_a_and_b(&mut self) -> Matrix;
+    fn is_zero_col(&mut self) -> bool;
     fn rev(&mut self) -> Matrix;
     fn transform(&mut self) -> Matrix;
     fn det(&mut self) -> u32;
@@ -119,6 +120,35 @@ impl MatrixOperationsMethods for MatrixOperations {
 
         return matrix_c;
     }
+    fn is_zero_col(&mut self) -> bool {
+
+        let mut count: u32;
+
+        for _i in 0..self.matrix_a.rows {
+
+            count = 0;
+
+            for _j in 0..self.matrix_a.col {
+
+                if self.matrix_a.matrix[_i as usize][_j as usize] == 0 {
+
+                    count += 1;
+
+                }
+
+            }
+
+            if count == self.matrix_a.col {
+
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
     fn rev(&mut self) -> Matrix {
  
         let mut matrix_c: Matrix = Matrix { rows: self.matrix_a.rows, col: self.matrix_a.col, matrix: Vec::new() };
@@ -151,6 +181,11 @@ impl MatrixOperationsMethods for MatrixOperations {
 
                     }
 
+                }
+
+                if self.is_zero_col() {
+
+                    return Matrix { rows: self.matrix_a.rows, col: self.matrix_a.col, matrix: Vec::new() };
                 }
 
             }
